@@ -81,6 +81,10 @@ DB_DSN=host=localhost user=postgres password=your_db_password dbname=your_db_nam
 #### Step 4: Generate Models Using GORM Gen
 To generate models and query helpers using gorm gen, run:
 ```
+go get -u gorm.io/gorm
+go get -u gorm.io/driver/postgres # Thay postgres bằng driver khác nếu cần
+go install gorm.io/gen/tools/gentool@latest
+
 $ gentool -c "./lib/database/gen.tool.yaml"
 ```
 This script will load your .env file, update the configuration, and generate models files under `lib/database/entity`.

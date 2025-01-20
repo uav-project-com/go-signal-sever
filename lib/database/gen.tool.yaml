@@ -4,7 +4,7 @@
 version: "0.1"
 database:
   # consult[https://gorm.io/docs/connecting_to_the_database.html]"
-  dsn : "host=localhost user=postgres password=177177 dbname=test_db port=5432 sslmode=disable TimeZone=Asia/Bangkok"
+  dsn : "host=localhost user=postgres password=password dbname=test_db port=5432 sslmode=disable TimeZone=Asia/Bangkok"
   # input mysql or postgres or sqlite or sqlserver. consult[https://gorm.io/docs/connecting_to_the_database.html]
   db  : "postgres"
   # # specify a directory for output
