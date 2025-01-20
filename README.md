@@ -1,4 +1,5 @@
 # Go Fiber Layered Architecture Project
+> Folk: https://github.com/trwfs00/golang-layered-arch-simple-boilerplate
 ### Project Overview
 This project is a boilerplate for creating a Go-based web service using the Go Fiber framework with a layered architecture, consisting of:
 
