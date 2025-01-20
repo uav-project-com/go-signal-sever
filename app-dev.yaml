@@ -12,3 +12,6 @@ STUN:
     - "stun:stun3.l.google.com:5349"
     - "stun:stun4.l.google.com:19302"
     - "stun:stun4.l.google.com:5349"
+# time interval for request resend lost video frame, read more: docs/webrtc.md#rtcpPLIInterval
+# unit: nano second, value: 3 seconds
+rtcpPLIInterval: 3000000000
