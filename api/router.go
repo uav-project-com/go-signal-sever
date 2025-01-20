@@ -11,8 +11,10 @@ func SetupRoutes(app *fiber.App, userHandler *user.UserHandler) {
 	api := app.Group("/api/v1")
 
 	userGroup := api.Group("/user")
+	// GET /api/v1/user/:id
 	userGroup.Get("/:id", userHandler.GetUserById)
+	// POST /api/v1/user
 	userGroup.Post("/", userHandler.CreateUser)
 
-	// TODO: Add more routes
+	// Webrtc router
 }

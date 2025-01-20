@@ -13,8 +13,11 @@ var (
 )
 
 func New(dirDepth uint) {
-	viper.SetConfigName("app")
-	viper.SetConfigType("env")
+	viper.SetDefault("ENV", "dev")
+	env := viper.GetString(EnvKey)
+	viper.SetConfigName("app-" + env)
+	viper.SetConfigType("yaml")
+	log.Println("ENV: " + env)
 
 	var configDir string
 	if dirDepth == 0 {

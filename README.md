@@ -38,7 +38,7 @@ This project is a boilerplate for creating a Go-based web service using the Go F
 │   └── environment/
 │       └── env.go
 ├── main.go
-├── app.env
+├── app.yaml
 ├── gen_models.sh
 ├── go.mod
 └── README.md
