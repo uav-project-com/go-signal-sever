@@ -76,7 +76,7 @@ $ go mod tidy
 Create an .env file at the root of your project to manage environment variables. Below is an example of the contents:
 ```env
 ENV=development
-SERVICE_PORT=9090
+SERVICE_PORT=8080
 DB_DSN=host=localhost user=postgres password=your_db_password dbname=your_db_name port=5432 sslmode=disable
 ```
 #### Step 4: Generate Models Using GORM Gen
@@ -94,7 +94,7 @@ Run the application using:
 ```
 $ go run main.go
 ```
-The server will start at the port specified in the .env file (default is 9090).
+The server will start at the port specified in the .env file (default is 8080).
 
 #### Step 6: Access the API
 The following API endpoints are available:

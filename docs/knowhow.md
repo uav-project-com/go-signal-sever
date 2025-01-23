@@ -261,7 +261,7 @@ func main() {
 	// Get the port from the environment
 	port := environment.GetString(environment.ServicePort)
 	if port == "" {
-		port = "9090" // Default port if not set
+		port = "8080" // Default port if not set
 	}
 
 	// Start the server
