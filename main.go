@@ -11,10 +11,27 @@ import (
 	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"gopkg.in/natefinch/lumberjack.v2"
+	"io"
 	"log"
+	"os"
 )
 
 func main() {
+	// init log file
+	// Set up lumberjack for log rotation
+	logFile := &lumberjack.Logger{
+		Filename:   "info.log", // Log file name
+		MaxSize:    10,         // Maximum size in MB before rotation
+		MaxBackups: 5,          // Maximum number of old log files to retain
+		MaxAge:     30,         // Maximum age (days) before log files are deleted
+		Compress:   true,       // Enable gzip compression for old log files
+	}
+	// output log to file & console
+	// Set output to both file and console
+	multiWriter := io.MultiWriter(logFile, os.Stdout)
+	log.SetOutput(multiWriter)
+
 	// Load environment variables
 	env.New(0) // Pass 0 if the env file is in the current directory
 
