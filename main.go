@@ -3,9 +3,11 @@ package main
 import (
 	"boilerplate/api"
 	"boilerplate/api/handler/user"
+	myRtc "boilerplate/api/handler/webrtc"
 	"boilerplate/api/repository"
 	"boilerplate/api/service/user/command"
 	"boilerplate/api/service/user/query"
+	webrtcCommand "boilerplate/api/service/webrtc/command"
 	"boilerplate/lib/database"
 	env "boilerplate/lib/environment"
 	"fmt"
@@ -58,6 +60,9 @@ func main() {
 	// Handlers
 	userHandler := user.NewUserHandler(getUserByIdService, createUserService)
 
+	// Webrtc handlers
+	webrtcHandlers := myRtc.NewWebrtcHandler(webrtcCommand.NewCreateUserService())
+
 	// Set up Fiber
 	app := fiber.New()
 	app.Use(cors.New(cors.Config{
@@ -68,12 +73,31 @@ func main() {
 		AllowCredentials: true,                              // Cho phép gửi cookies
 	}))
 	api.SetupRoutes(app, userHandler)
+	api.SetupWebrtcRouters(app, webrtcHandlers)
 
 	// Get the port from the environment
 	port := env.GetString(env.ServicePort)
 	if port == "" {
 		port = "8080" // Default port if not set
 	}
+
+	////////////////////////////// INIT webrtc objects /////////////////////////////////////////////////////////////////
+	// sender to channel of track: tạo 1 mảng chứa các webrtc.Track?? TODO: sửa comment
+	//peerConnectionMap := make(map[string]chan *webrtc.Track)
+	//// setting video codec, audio codec with `m`
+	//m := webrtc.MediaEngine{}
+	//// Set up the codecs you want to use.
+	//// Only support VP8(video compression), this makes our proxying code simpler
+	//m.RegisterCodec(webrtc.NewRTPVP8Codec(webrtc.DefaultPayloadTypeVP8, 90000)) // TODO: optimize video encoding
+	//
+	//api := webrtc.NewAPI(webrtc.WithMediaEngine(m))
+	//peerConnectionConfig := webrtc.Configuration{
+	//	ICEServers: []webrtc.ICEServer{
+	//		{
+	//			URLs: env.GetStrings("STUN"),
+	//		},
+	//	},
+	//}
 
 	// Start the server
 	if err := app.Listen(fmt.Sprintf(":%s", port)); err != nil {

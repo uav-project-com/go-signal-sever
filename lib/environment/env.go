@@ -45,6 +45,10 @@ func GetString(key string) string {
 	return viper.GetString(key)
 }
 
+func GetStrings(key string) []string {
+	return viper.GetStringSlice(key)
+}
+
 func GetInt(key string) int {
 	if !viper.IsSet(key) {
 		panic("failed to get environment key: " + key)

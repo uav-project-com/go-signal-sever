@@ -1,5 +1,7 @@
 # Go Fiber Layered Architecture Project
 > Folk: https://github.com/trwfs00/golang-layered-arch-simple-boilerplate
+
+> Webrtc code init like: https://github.com/uav-project-com/go-video-conference 
 ### Project Overview
 This project is a boilerplate for creating a Go-based web service using the Go Fiber framework with a layered architecture, consisting of:
 
