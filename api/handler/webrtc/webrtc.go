@@ -1,13 +1,17 @@
 package webrtc
 
 import (
-	"boilerplate/api/service/webrtc/command"
+	"boilerplate/api/service/webrtc/query"
 )
 
 type ConnectHandler struct {
-	startCall command.WebrtcService
+	startCall      query.WebrtcService
+	peerConnection *query.PeerConnectionService
 }
 
-func NewWebrtcHandler(service command.WebrtcService) *ConnectHandler {
-	return &ConnectHandler{startCall: service}
+func NewWebrtcHandler(callSvc query.WebrtcService, peerSvc *query.PeerConnectionService) *ConnectHandler {
+	return &ConnectHandler{
+		startCall:      callSvc,
+		peerConnection: peerSvc,
+	}
 }

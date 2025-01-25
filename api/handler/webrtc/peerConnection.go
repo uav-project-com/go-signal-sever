@@ -3,6 +3,7 @@ package webrtc
 import (
 	"boilerplate/lib/dto"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/log"
 )
 
 func (h *ConnectHandler) StartCall(c *fiber.Ctx) error {
@@ -13,8 +14,9 @@ func (h *ConnectHandler) StartCall(c *fiber.Ctx) error {
 		})
 	}
 
-	err := h.startCall.Execute(request)
+	err := h.startCall.Execute(c, h.peerConnection, request)
 	if err != nil {
+		log.Errorf("Error starting call: %v", err)
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": "Could not making webrtc call",
 		})

@@ -24,7 +24,7 @@ This project is a boilerplate for creating a Go-based web service using the Go F
 │   │   └── users.go
 │   ├── service/
 │   │   └── user/
-│   │       ├── command/
+│   │       ├── query/
 │   │       │   └── create.go
 │   │       ├── query/
 │   │       │   └── userById.go

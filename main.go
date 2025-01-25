@@ -7,15 +7,15 @@ import (
 	"boilerplate/api/repository"
 	"boilerplate/api/service/user/command"
 	"boilerplate/api/service/user/query"
-	webrtcCommand "boilerplate/api/service/webrtc/command"
+	webrtcQuery "boilerplate/api/service/webrtc/query"
 	"boilerplate/lib/database"
 	env "boilerplate/lib/environment"
 	"fmt"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/log"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"gopkg.in/natefinch/lumberjack.v2"
 	"io"
-	"log"
 	"os"
 )
 
@@ -54,14 +54,17 @@ func main() {
 	// user query
 	getUserByIdService := query.NewGetUserByIdService(userRepo)
 
-	// user command
+	// user query
 	createUserService := command.NewCreateUserService(userRepo)
 
 	// Handlers
 	userHandler := user.NewUserHandler(getUserByIdService, createUserService)
 
 	// Webrtc handlers
-	webrtcHandlers := myRtc.NewWebrtcHandler(webrtcCommand.NewCreateUserService())
+	webrtcHandlers := myRtc.NewWebrtcHandler(
+		webrtcQuery.NewCreateWebrtcService(),   // for handler new call
+		webrtcQuery.NewPeerConnectionService(), // INIT webrtc objects
+	)
 
 	// Set up Fiber
 	app := fiber.New()
@@ -80,24 +83,6 @@ func main() {
 	if port == "" {
 		port = "8080" // Default port if not set
 	}
-
-	////////////////////////////// INIT webrtc objects /////////////////////////////////////////////////////////////////
-	// sender to channel of track: tạo 1 mảng chứa các webrtc.Track?? TODO: sửa comment
-	//peerConnectionMap := make(map[string]chan *webrtc.Track)
-	//// setting video codec, audio codec with `m`
-	//m := webrtc.MediaEngine{}
-	//// Set up the codecs you want to use.
-	//// Only support VP8(video compression), this makes our proxying code simpler
-	//m.RegisterCodec(webrtc.NewRTPVP8Codec(webrtc.DefaultPayloadTypeVP8, 90000)) // TODO: optimize video encoding
-	//
-	//api := webrtc.NewAPI(webrtc.WithMediaEngine(m))
-	//peerConnectionConfig := webrtc.Configuration{
-	//	ICEServers: []webrtc.ICEServer{
-	//		{
-	//			URLs: env.GetStrings("STUN"),
-	//		},
-	//	},
-	//}
 
 	// Start the server
 	if err := app.Listen(fmt.Sprintf(":%s", port)); err != nil {

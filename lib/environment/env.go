@@ -1,7 +1,7 @@
 package environment
 
 import (
-	"log"
+	"github.com/gofiber/fiber/v2/log"
 
 	"github.com/spf13/viper"
 )
@@ -17,7 +17,7 @@ func New(dirDepth uint) {
 	env := viper.GetString(EnvKey)
 	viper.SetConfigName("app-" + env)
 	viper.SetConfigType("yaml")
-	log.Println("ENV: " + env)
+	log.Info("ENV: " + env)
 
 	var configDir string
 	if dirDepth == 0 {

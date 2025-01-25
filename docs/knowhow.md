@@ -211,7 +211,7 @@ package main
 
 import (
 	"fmt"
-	"log"
+	"github.com/gofiber/fiber/v2/log"
 
 	"github.com/gofiber/fiber/v2"
 	"user/api"
@@ -243,7 +243,7 @@ func main() {
 	// user query
 	getUserByIdService := query.NewGetUserByIdService(userRepo)
 
-	// user command
+	// user query
 	createUserService := command.NewCreateUserService(userRepo)
     updateUserService := command.NewUpdateUserService(userRepo) // New service for updating user
 

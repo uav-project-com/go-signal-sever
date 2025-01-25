@@ -1,7 +1,7 @@
 package dto
 
 type Sdp struct {
-	Sdp string
+	Sdp string `json:"sdp"`
 }
 
 type CallInfo struct {
@@ -9,4 +9,5 @@ type CallInfo struct {
 	UserId    string `json:"userId"`
 	PeerId    string `json:"peerId"`
 	IsSender  *bool  `json:"isSender"`
+	Session   *Sdp   `json:"sdp"`
 }

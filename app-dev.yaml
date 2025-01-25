@@ -14,6 +14,6 @@ STUN:
     - "stun:stun4.l.google.com:5349"
 # time interval for request resend lost video frame, read more: docs/webrtc.md#rtcpPLIInterval
 # unit: nano second, value: 3 seconds
-rtcpPLIInterval: 3000000000
+RTCP_PLI_INTERVAL: 3
 cors:
   allow_origins: "http://192.168.20.127:8080, http://192.168.20.127:4200, http://192.168.0.200:8080, http://192.168.0.200:4200"
