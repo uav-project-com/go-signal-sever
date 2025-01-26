@@ -6,7 +6,6 @@ import (
 	env "boilerplate/lib/environment"
 	"errors"
 	"fmt"
-	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
 	"github.com/pion/rtcp"
 	"github.com/pion/webrtc/v2"
@@ -18,7 +17,7 @@ var rtcpPLIInterval time.Duration
 
 // WebrtcService service-interface
 type WebrtcService interface {
-	Execute(*fiber.Ctx, *PeerConnectionService, dto.CallInfo) error
+	Execute(*PeerConnectionService, dto.CallInfo) (*webrtc.SessionDescription, error)
 }
 
 type webrtcService struct {
@@ -32,7 +31,7 @@ type webrtcService struct {
 //
 // Returns:
 //   - error: error
-func (s *webrtcService) Execute(c *fiber.Ctx, svc *PeerConnectionService, info dto.CallInfo) error {
+func (s *webrtcService) Execute(svc *PeerConnectionService, info dto.CallInfo) (*webrtc.SessionDescription, error) {
 	log.Info(fmt.Sprintf("Calling info: %s", lib.ToJsonStr(info)))
 	offer := webrtc.SessionDescription{}
 	lib.Decode(info.Session.Sdp, &offer)
@@ -40,17 +39,27 @@ func (s *webrtcService) Execute(c *fiber.Ctx, svc *PeerConnectionService, info d
 	// this is the gist of webrtc, generates and process SDP
 	peerConnection, err := svc.Api.NewPeerConnection(svc.Config)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	if info.IsSender != nil && *info.IsSender == false {
 		err := receiveTrack(peerConnection, svc.TrackChannels, info.PeerId)
 		if err != nil {
-			return err
+			return nil, err
 		}
 	} else {
 		createTrack(peerConnection, svc.TrackChannels, info.UserId)
 	}
-	return nil
+	// Set the SessionDescription of remote peer
+	err = peerConnection.SetRemoteDescription(offer)
+	if err != nil {
+		return nil, err
+	}
+	// Create answer
+	answer, err := peerConnection.CreateAnswer(nil)
+	if err != nil {
+		return nil, err
+	}
+	return &answer, nil
 }
 
 // user is the caller of the method

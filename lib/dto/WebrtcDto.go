@@ -9,5 +9,5 @@ type CallInfo struct {
 	UserId    string `json:"userId"`
 	PeerId    string `json:"peerId"`
 	IsSender  *bool  `json:"isSender"`
-	Session   *Sdp   `json:"sdp"`
+	Session   *Sdp   `json:"session"`
 }

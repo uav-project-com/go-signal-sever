@@ -16,4 +16,4 @@ STUN:
 # unit: nano second, value: 3 seconds
 RTCP_PLI_INTERVAL: 3
 cors:
-  allow_origins: "http://192.168.20.127:8080, http://192.168.20.127:4200, http://192.168.0.200:8080, http://192.168.0.200:4200"
+  allow_origins: "http://192.168.1.22:8080, http://192.168.1.22:4200, http://192.168.0.200:8080, http://192.168.0.200:4200"

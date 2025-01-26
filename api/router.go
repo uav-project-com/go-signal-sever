@@ -17,6 +17,7 @@ func SetupRoutes(app *fiber.App, userHandler *user.UserHandler) {
 }
 
 // SetupWebrtcRouters handler webrtc signal api
+// url: /api/v1/webrtc/start-call
 func SetupWebrtcRouters(app *fiber.App, handler *webrtc.ConnectHandler) {
 	api := app.Group("/api/v1/webrtc")
 	api.Post("/start-call", handler.StartCall)
