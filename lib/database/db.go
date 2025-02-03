@@ -3,7 +3,7 @@ package database
 import (
 	"boilerplate/lib/database/entity"
 	"fmt"
-	"log"
+	"github.com/gofiber/fiber/v2/log"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

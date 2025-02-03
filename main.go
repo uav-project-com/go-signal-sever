@@ -1,26 +1,44 @@
 package main
 
 import (
-	"fmt"
-	"log"
-
 	"boilerplate/api"
 	"boilerplate/api/handler/user"
+	myRtc "boilerplate/api/handler/webrtc"
 	"boilerplate/api/repository"
 	"boilerplate/api/service/user/command"
 	"boilerplate/api/service/user/query"
+	webrtcQuery "boilerplate/api/service/webrtc/query"
 	"boilerplate/lib/database"
-	"boilerplate/lib/environment"
-
+	env "boilerplate/lib/environment"
+	"fmt"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/log"
+	"github.com/gofiber/fiber/v2/middleware/cors"
+	"gopkg.in/natefinch/lumberjack.v2"
+	"io"
+	"os"
 )
 
 func main() {
+	// init log file
+	// Set up lumberjack for log rotation
+	logFile := &lumberjack.Logger{
+		Filename:   "info.log", // Log file name
+		MaxSize:    10,         // Maximum size in MB before rotation
+		MaxBackups: 5,          // Maximum number of old log files to retain
+		MaxAge:     30,         // Maximum age (days) before log files are deleted
+		Compress:   true,       // Enable gzip compression for old log files
+	}
+	// output log to file & console
+	// Set output to both file and console
+	multiWriter := io.MultiWriter(logFile, os.Stdout)
+	log.SetOutput(multiWriter)
+
 	// Load environment variables
-	environment.New(0) // Pass 0 if the env file is in the current directory
+	env.New(0) // Pass 0 if the env file is in the current directory
 
 	// Get DSN from environment variables
-	dsn := environment.GetString(environment.DsnKey)
+	dsn := env.GetString(env.DsnKey)
 	if dsn == "" {
 		log.Fatal("DB_DSN not set in environment")
 	}
@@ -36,20 +54,34 @@ func main() {
 	// user query
 	getUserByIdService := query.NewGetUserByIdService(userRepo)
 
-	// user command
+	// user query
 	createUserService := command.NewCreateUserService(userRepo)
 
 	// Handlers
 	userHandler := user.NewUserHandler(getUserByIdService, createUserService)
 
+	// Webrtc handlers
+	webrtcHandlers := myRtc.NewWebrtcHandler(
+		webrtcQuery.NewCreateWebrtcService(),   // for handler new call
+		webrtcQuery.NewPeerConnectionService(), // INIT webrtc objects
+	)
+
 	// Set up Fiber
 	app := fiber.New()
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: env.GetString("cors.allow_origins"), // Chỉ cho phép các domain cụ thể
+		AllowHeaders: "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, " +
+			"accept, origin, Cache-Control, X-Requested-With", // Header được phép
+		AllowMethods:     "GET, POST, PUT, DELETE, OPTIONS", // Phương thức HTTP được phép
+		AllowCredentials: true,                              // Cho phép gửi cookies
+	}))
 	api.SetupRoutes(app, userHandler)
+	api.SetupWebrtcRouters(app, webrtcHandlers)
 
 	// Get the port from the environment
-	port := environment.GetString(environment.ServicePort)
+	port := env.GetString(env.ServicePort)
 	if port == "" {
-		port = "9090" // Default port if not set
+		port = "8080" // Default port if not set
 	}
 
 	// Start the server

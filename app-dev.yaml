@@ -1,0 +1,19 @@
+ENV: development
+SERVICE_PORT: 8080
+DB_DSN: "host=localhost user=postgres password=password dbname=h_engine port=5432 sslmode=disable"
+STUN:
+    - "stun:stun.l.google.com:19302"
+    - "stun:stun.l.google.com:5349"
+    - "stun:stun1.l.google.com:3478"
+    - "stun:stun1.l.google.com:5349"
+    - "stun:stun2.l.google.com:19302"
+    - "stun:stun2.l.google.com:5349"
+    - "stun:stun3.l.google.com:3478"
+    - "stun:stun3.l.google.com:5349"
+    - "stun:stun4.l.google.com:19302"
+    - "stun:stun4.l.google.com:5349"
+# time interval for request resend lost video frame, read more: docs/webrtc.md#rtcpPLIInterval
+# unit: nano second, value: 3 seconds
+RTCP_PLI_INTERVAL: 3
+cors:
+  allow_origins: "http://192.168.1.22:8080, http://192.168.1.22:4200, http://192.168.0.200:8080, http://192.168.0.200:4200"

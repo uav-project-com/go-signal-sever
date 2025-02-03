@@ -211,7 +211,7 @@ package main
 
 import (
 	"fmt"
-	"log"
+	"github.com/gofiber/fiber/v2/log"
 
 	"github.com/gofiber/fiber/v2"
 	"user/api"
@@ -243,7 +243,7 @@ func main() {
 	// user query
 	getUserByIdService := query.NewGetUserByIdService(userRepo)
 
-	// user command
+	// user query
 	createUserService := command.NewCreateUserService(userRepo)
     updateUserService := command.NewUpdateUserService(userRepo) // New service for updating user
 
@@ -261,7 +261,7 @@ func main() {
 	// Get the port from the environment
 	port := environment.GetString(environment.ServicePort)
 	if port == "" {
-		port = "9090" // Default port if not set
+		port = "8080" // Default port if not set
 	}
 
 	// Start the server

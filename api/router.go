@@ -2,17 +2,23 @@ package api
 
 import (
 	"boilerplate/api/handler/user"
+	"boilerplate/api/handler/webrtc"
 
 	"github.com/gofiber/fiber/v2"
 )
 
-// Set up routes
+// SetupRoutes Set up routes
 func SetupRoutes(app *fiber.App, userHandler *user.UserHandler) {
-	api := app.Group("/api/v1")
+	api := app.Group("/api/v1/user")
+	// GET /api/v1/user/:id
+	api.Get("/:id", userHandler.GetUserById)
+	// POST /api/v1/user
+	api.Post("/", userHandler.CreateUser)
+}
 
-	userGroup := api.Group("/user")
-	userGroup.Get("/:id", userHandler.GetUserById)
-	userGroup.Post("/", userHandler.CreateUser)
-
-	// TODO: Add more routes
+// SetupWebrtcRouters handler webrtc signal api
+// url: /api/v1/webrtc/start-call
+func SetupWebrtcRouters(app *fiber.App, handler *webrtc.ConnectHandler) {
+	api := app.Group("/api/v1/webrtc")
+	api.Post("/start-call", handler.StartCall)
 }

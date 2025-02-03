@@ -1,5 +1,7 @@
 # Go Fiber Layered Architecture Project
 > Folk: https://github.com/trwfs00/golang-layered-arch-simple-boilerplate
+
+> Webrtc code init like: https://github.com/uav-project-com/go-video-conference 
 ### Project Overview
 This project is a boilerplate for creating a Go-based web service using the Go Fiber framework with a layered architecture, consisting of:
 
@@ -22,7 +24,7 @@ This project is a boilerplate for creating a Go-based web service using the Go F
 │   │   └── users.go
 │   ├── service/
 │   │   └── user/
-│   │       ├── command/
+│   │       ├── query/
 │   │       │   └── create.go
 │   │       ├── query/
 │   │       │   └── userById.go
@@ -38,7 +40,7 @@ This project is a boilerplate for creating a Go-based web service using the Go F
 │   └── environment/
 │       └── env.go
 ├── main.go
-├── app.env
+├── app.yaml
 ├── gen_models.sh
 ├── go.mod
 └── README.md
@@ -76,7 +78,7 @@ $ go mod tidy
 Create an .env file at the root of your project to manage environment variables. Below is an example of the contents:
 ```env
 ENV=development
-SERVICE_PORT=9090
+SERVICE_PORT=8080
 DB_DSN=host=localhost user=postgres password=your_db_password dbname=your_db_name port=5432 sslmode=disable
 ```
 #### Step 4: Generate Models Using GORM Gen
@@ -94,7 +96,7 @@ Run the application using:
 ```
 $ go run main.go
 ```
-The server will start at the port specified in the .env file (default is 9090).
+The server will start at the port specified in the .env file (default is 8080).
 
 #### Step 6: Access the API
 The following API endpoints are available:
