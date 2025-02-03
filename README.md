@@ -1,3 +1,4 @@
+> CLOSED PROJECT: BECAUSE WEBRTC ERROR call api hang, cannot fixed yet
 # Go Fiber Layered Architecture Project
 > Folk: https://github.com/trwfs00/golang-layered-arch-simple-boilerplate
 
