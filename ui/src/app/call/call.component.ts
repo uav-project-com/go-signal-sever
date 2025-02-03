@@ -60,7 +60,7 @@ export class CallComponent implements OnInit {
 
     this.pcSender.onicecandidate = (event: { candidate: null; }) => {
       if (event.candidate === null) {
-        this.http.post<Sdp>('http://192.168.1.22:8080' + this.URL,
+        this.http.post<Sdp>('http://192.168.0.200:8080' + this.URL,
           {
             "session": {"sdp": btoa(JSON.stringify(this.pcSender.localDescription))},
             "meetingId": this.meetingId,
@@ -76,7 +76,7 @@ export class CallComponent implements OnInit {
     }
     this.pcReceiver.onicecandidate = (event: { candidate: null; }) => {
       if (event.candidate === null) {
-        this.http.post<Sdp>('http://192.168.1.22:8080' + this.URL,
+        this.http.post<Sdp>('http://192.168.0.200:8080' + this.URL,
           {
             "session": {"sdp": btoa(JSON.stringify(this.pcReceiver.localDescription))},
             "meetingId": this.meetingId,
@@ -94,15 +94,17 @@ export class CallComponent implements OnInit {
 
   startCall() {
     // sender part of the call
-    navigator.mediaDevices.getUserMedia({video: true, audio: true}).then((stream) => {
-      const senderVideo: any = document.getElementById('senderVideo');
-      senderVideo.srcObject = stream;
-      const tracks = stream.getTracks();
-      for (let i = 0; i < tracks.length; i++) {
-        this.pcSender.addTrack(stream.getTracks()[i]);
-      }
-      this.pcSender.createOffer().then(d => this.pcSender.setLocalDescription(d))
-    })
+    if (this.userId === "alice") {
+      navigator.mediaDevices.getUserMedia({video: true, audio: false}).then((stream) => {
+        const senderVideo: any = document.getElementById('senderVideo');
+        senderVideo.srcObject = stream;
+        const tracks = stream.getTracks();
+        for (let i = 0; i < tracks.length; i++) {
+          this.pcSender.addTrack(stream.getTracks()[i]);
+        }
+        this.pcSender.createOffer().then(d => this.pcSender.setLocalDescription(d))
+      })
+    }
     // you can use event listner so that you inform he is connected!
     this.pcSender.addEventListener('connectionstatechange', event => {
       if (this.pcSender.connectionState === 'connected') {

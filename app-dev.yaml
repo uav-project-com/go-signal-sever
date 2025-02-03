@@ -1,6 +1,6 @@
 ENV: development
 SERVICE_PORT: 8080
-DB_DSN: "host=localhost user=postgres password=password dbname=test_db port=5432 sslmode=disable"
+DB_DSN: "host=localhost user=postgres password=password dbname=h_engine port=5432 sslmode=disable"
 STUN:
     - "stun:stun.l.google.com:19302"
     - "stun:stun.l.google.com:5349"
